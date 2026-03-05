@@ -111,6 +111,8 @@
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
   
+  <script src="./static/js/video_comparison.js"></script>
+  
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
   {
@@ -179,6 +181,131 @@
     ]
   }
   </script>
+
+  <script>
+    function switchWildSlamSeq(index) {
+      // Hide all tab panes
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      tabPanes.forEach(pane => {
+        pane.style.display = 'none';
+        pane.classList.remove('active');
+      });
+      
+      // Remove active class from all nav items
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      const currentLink = document.querySelector(`.nav-link[onclick="switchWildSlamSeq(${index})"]`);
+      if (currentLink) {
+          currentLink.classList.add('active');
+      }
+
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+          pane.style.display = 'none';
+          const video = pane.querySelector('video');
+          if (video) {
+              video.pause();
+          }
+      });
+    
+
+      const paneId = ['w_x', 'pb1', 'park'][index];
+      if (paneId) {
+        const pane = document.getElementById(paneId);
+        if (pane) {
+            pane.style.display = 'block';
+            const video = document.getElementById(paneId + 'Video');
+            if (video) {
+
+                if (video.readyState < 2) {
+                    video.addEventListener('loadedmetadata', function() {
+                        video.play();
+                    });
+                } else {
+                    video.play();
+                }
+            }
+        }
+      }
+
+      // Show the selected tab pane and set the tab as active
+      if (index === 0) {
+        document.getElementById('w_x').style.display = 'block';
+        document.getElementById('w_x').classList.add('active');
+      } else if (index === 1) {
+        document.getElementById('pb1').style.display = 'block';
+        document.getElementById('pb1').classList.add('active');
+      } else if (index === 2) {
+        document.getElementById('park').style.display = 'block';
+        document.getElementById('park').classList.add('active');
+      } 
+      
+      // Set the clicked nav item as active
+      document.querySelectorAll('.nav-item')[index].classList.add('active');
+      
+      // Trigger resize for videos that might be visible now
+      const videos = document.querySelectorAll('.video');
+      videos.forEach(video => {
+        if (video.offsetParent !== null) {  // Check if video is visible
+          if (typeof resizeAndPlay === 'function') {
+            resizeAndPlay(video);
+          }
+        }
+      });
+    }
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const firstTab = document.querySelector('.nav-link[onclick="switchWildSlamSeq(0)"]');
+        if (firstTab) {
+            firstTab.click();
+        }
+
+        const firstVideo = document.getElementById('w_xVideo');
+        const canvas = document.getElementById('w_xVideoMerge');
+        
+        if (firstVideo && canvas) {
+            const container = firstVideo.parentElement;
+            container.style.display = 'block';
+            
+            firstVideo.muted = true;
+            
+            const handleVideoLoad = () => {
+                console.log("Video loaded, initializing comparison");
+                if (typeof resizeAndPlay === 'function') {
+                    resizeAndPlay(firstVideo);
+                }
+                
+                const playPromise = firstVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        console.log("Auto-play with comparison effect started");
+                    })
+                    .catch(error => {
+                        console.log("Auto-play was prevented:", error);
+                    });
+                }
+            };
+
+            if (firstVideo.readyState >= 2) {
+                handleVideoLoad();
+            } else {
+                firstVideo.addEventListener('loadeddata', handleVideoLoad, { once: true });
+            }
+        } else {
+            console.error("Video or canvas element not found");
+        }
+    }, 100); 
+});
+  
+</script>
+
 </head>
 <body>
     <!-- "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico", -->
@@ -292,6 +419,7 @@
 </section>
 <!-- End teaser video -->
 
+
 <!-- Paper abstract -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
@@ -313,7 +441,391 @@
 </section>
 <!-- End paper abstract -->
 
+<!-- IR -->
+<section class="section">
 
+  <div class="columns is-centered has-text-centered">
+    <h2 class="title is-3">Results</h2>
+  </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-gapless is-mobile is-vcentered mb-3">
+      <div class="column is-narrow has-text-centered">
+        <span class="is-size-5 has-text-weight-bold">w_x</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_x/image.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_x/render_neb_img.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_x/uncer_neb_img.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_x/render_img.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_x/uncer_img.gif" loading="lazy"/>
+        </div>
+      </div>
+    </div>
+    
+  <div class="container is-max-desktop">
+    <div class="columns is-gapless is-mobile is-vcentered mb-1">
+      <div class="column is-narrow has-text-centered">
+        <span class="is-size-5 has-text-weight-bold">w_r</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_r/image.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_r/render_neb_img.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_r/uncer_neb_img.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_r/render_img.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/IR/w_r/uncer_img.gif" loading="lazy"/>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="columns is-gapless is-mobile is-vcentered gif-row">
+      <div class="column is-narrow has-text-centered">
+        <span class="is-size-5 has-text-weight-bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">RGB input</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">rendering w/o IR</span>
+      </div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">uncertainty w/o IR</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">rendering w/ IR</span>
+      </div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">uncertainty w/ IR</span>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
+    <b>Impact of IR on predicted uncertainty map. </b>Predicted uncertainty on a sample frame from w_x and w_r sequence
+in TUM dataset. Higher values are shown in red, lower values in
+blue, with intermediate values transitioning smoothly.
+  </h2>
+</section>
+<!-- End IR -->
+
+<hr class="section-divider">
+
+<!-- IR -->
+<section class="section">
+
+  <!-- <div class="columns is-centered has-text-centered">
+    <h2 class="title is-3">Results</h2>
+  </div> -->
+
+  <div class="container is-max-desktop">
+    <div class="columns is-gapless is-mobile is-vcentered mb-3">
+      <div class="column is-narrow has-text-centered" style="width: 80px; " >
+        <span class="is-size-5 has-text-weight-bold">w_x</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/w_x/image.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/w_x/yolo_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/w_x/flow_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/w_x/uncer_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+    </div>
+    
+  <div class="container is-max-desktop">
+    <div class="columns is-gapless is-mobile is-vcentered mb-1">
+      <div class="column is-narrow has-text-centered" style="width: 80px;">
+        <span class="is-size-5 has-text-weight-bold">pb1</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/pb1/image.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/pb1/yolo_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/pb1/flow_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/pb1/uncer_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+    </div>
+
+   <div class="container is-max-desktop">
+    <div class="columns is-gapless is-mobile is-vcentered mb-1">
+
+      <div class="column is-narrow has-text-centered" style="width: 80px;">
+        <span class="is-size-5 has-text-weight-bold">park</span>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/park/image.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/park/yolo_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/park/flow_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      
+      <div class="column">
+        <div class="image-container">
+          <img src="static/gifs/RUM/park/uncer_mask.gif" loading="lazy"/>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="columns is-gapless is-mobile is-vcentered gif-row">
+      <div class="column is-narrow has-text-centered">
+        <span class="is-size-5 has-text-weight-bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">RGB input</span>
+      </div>
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">yolo-basesd </span>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">flow-based</span>
+      </div>
+
+      <div class="column is-narrow has-text-centered" style="width: 1rem;"></div>
+
+      <div class="column has-text-centered">
+        <span class="is-size-6 has-text-weight-bold">RUM</span>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
+    <b>Comparison of dynamic object tracking across masks.</b> Performance of YOLO-based mask, flow-based mask, and our RUM on three sample frame sets from w_x in TUM, pb1 in Bonn and park in Wild-SLAM
+  </h2>
+</section>
+<!-- End IR -->
+
+<hr class="section-divider">
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Results. -->
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
+
+        
+        <div class="container is-max-desktop">
+           <!-- Navigation tabs with Bootstrap-style -->
+<ul class="nav nav-tabs" id="dataset-tabs" 
+    style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px; justify-content: center;">
+    
+    <li class="nav-item" style="flex: 0 0 auto;">
+        <a class="nav-link active" onclick="switchWildSlamSeq(0)" 
+           style="display: block; text-align: center; padding: 12px 24px; 
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  font-size: 20px;
+                  font-weight: 500;
+                  letter-spacing: 0.5px;
+                  transition: all 0.3s ease;
+                  border-bottom: 3px solid transparent;
+                  position: relative;">w_x</a>
+    </li>
+
+    <li class="nav-item" style="flex: 0 0 auto;">
+        <a class="nav-link" onclick="switchWildSlamSeq(1)" 
+           style="display: block; text-align: center; padding: 12px 24px; 
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  font-size: 20px;
+                  font-weight: 500;
+                  letter-spacing: 0.5px;
+                  transition: all 0.3s ease;
+                  border-bottom: 3px solid transparent;
+                  position: relative;">pb1</a>
+    </li>
+
+    <li class="nav-item" style="flex: 0 0 auto;">
+        <a class="nav-link" onclick="switchWildSlamSeq(2)" 
+           style="display: block; text-align: center; padding: 12px 24px; 
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  font-size: 20px;
+                  font-weight: 500;
+                  letter-spacing: 0.5px;
+                  transition: all 0.3s ease;
+                  border-bottom: 3px solid transparent;
+                  position: relative;">park</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane" id="w_x" style="display: none;">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-full-width">
+                <video class="video" width="100%" id="w_xVideo" loop playsinline autoplay muted 
+                       src="static/videos/w_x/render_cmp.mp4" 
+                       onloadedmetadata="resizeAndPlay(this)" 
+                       style="height: 0px;"></video>
+                <canvas class="videoMerge" id="w_xVideoMerge"></canvas>
+            </div> 
+        </div>
+    </div>
+    
+    <div class="tab-pane" id="pb1" style="display: none;">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-full-width">
+                <video class="video" width="100%" id="pb1Video" loop playsinline autoplay muted 
+                       src="static/videos/pb1/render_cmp.mp4" 
+                       onloadedmetadata="resizeAndPlay(this)" 
+                       style="height: 0px;"></video>
+                <canvas class="videoMerge" id="pb1VideoMerge"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-pane" id="park" style="display: none;">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-full-width">
+                <video class="video" width="100%" id="parkVideo" loop playsinline autoplay muted 
+                       src="static/videos/park/render_cmp.mp4" 
+                       onloadedmetadata="resizeAndPlay(this)" 
+                       style="height: 0px;"></video>
+                <canvas class="videoMerge" id="parkVideoMerge"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+      </div>
+    </div>
+  <br>
+  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
+    <b>Comparison between 3DGS and 4DGS reconstruction.</b> Interactive comparison between 3DGS(left) and 4DGS(right) reconstruction results across three sequences from w_x in TUM, pb1 in Bonn and park in Wild-SLAM. Drag the slider to compare the rendering quality and temporal consistency.
+  </h2>
+  </div>
+    
+</section>
 
 <!-- BibTex citation -->
   <section class="section" id="BibTeX">
@@ -360,6 +872,82 @@
 <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
 
     <!-- End of Statcounter Code -->
+<style>
+/* .nav-tabs {
+    border-bottom: 2px solid #dee2e6;
+    background: #fff;
+    width: 100%;
+} */
+
+.nav-item {
+    margin: 0;
+}
+
+.nav-link {
+    color: #495057;
+    border-radius: 0;
+    border: none;
+    margin-right: 0;
+    width: 100%;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #007bff;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.nav-link:hover::after {
+    transform: scaleX(0.5);
+}
+
+.nav-link.active {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .nav-tabs {
+        gap: 10px;
+    }
+    .nav-link {
+        padding: 10px 16px;
+        font-size: 18px;
+    }
+}
+
+.section-divider {
+    width: 80%;
+    margin: 2rem auto;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+}
+</style>
 
   </body>
   </html>
