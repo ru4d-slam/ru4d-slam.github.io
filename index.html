@@ -449,6 +449,17 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 
   <div class="container is-max-desktop">
+    <div class="columns" style="margin-bottom: 30px; margin-left: 30px;">
+      <div class="column is-full">
+        <h2 style="color: #4a4a4a; 
+                  font-weight: bold; 
+                  font-size: 24px;
+                  margin: 0;">
+          Impact of IR
+        </h2>
+      </div>
+    </div>
+
     <div class="columns is-gapless is-mobile is-vcentered mb-3">
       <div class="column is-narrow has-text-centered">
         <span class="is-size-5 has-text-weight-bold">w_x</span>
@@ -556,13 +567,6 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
   </div>
-
-  <br>
-  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
-    <b>Impact of IR on predicted uncertainty map. </b>Predicted uncertainty on a sample frame from w_x and w_r sequence
-in TUM dataset. Higher values are shown in red, lower values in
-blue, with intermediate values transitioning smoothly.
-  </h2>
 </section>
 <!-- End IR -->
 
@@ -576,6 +580,18 @@ blue, with intermediate values transitioning smoothly.
   </div> -->
 
   <div class="container is-max-desktop">
+
+    <div class="columns" style="margin-bottom: 30px; margin-left: 30px;">
+      <div class="column is-full">
+        <h2 style="color: #4a4a4a; 
+                  font-weight: bold; 
+                  font-size: 24px;
+                  margin: 0;">
+          Dynamic Masks
+        </h2>
+      </div>
+    </div>
+
     <div class="columns is-gapless is-mobile is-vcentered mb-3">
       <div class="column is-narrow has-text-centered" style="width: 80px; " >
         <span class="is-size-5 has-text-weight-bold">w_x</span>
@@ -719,15 +735,12 @@ blue, with intermediate values transitioning smoothly.
       </div>
     </div>
   </div>
-
-  <br>
-  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
-    <b>Comparison of dynamic object tracking across masks.</b> Performance of YOLO-based mask, flow-based mask, and our RUM on three sample frame sets from w_x in TUM, pb1 in Bonn and park in Wild-SLAM
-  </h2>
 </section>
 <!-- End IR -->
 
 <hr class="section-divider">
+
+
 
 <section class="section">
   <div class="container is-max-desktop">
@@ -735,9 +748,19 @@ blue, with intermediate values transitioning smoothly.
     <!-- Results. -->
     <div class="columns is-centered ">
       <div class="column is-full-width">
-
-        
         <div class="container is-max-desktop">
+
+          <div class="columns" style="margin-bottom: 10px; margin-left: 30px;">
+            <div class="column is-full">
+              <h2 style="color: #4a4a4a; 
+                        font-weight: bold; 
+                        font-size: 24px;
+                        margin: 0;">
+                4D Rendering
+              </h2>
+            </div>
+          </div>
+        
            <!-- Navigation tabs with Bootstrap-style -->
 <ul class="nav nav-tabs" id="dataset-tabs" 
     style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px; justify-content: center;">
@@ -787,7 +810,7 @@ blue, with intermediate values transitioning smoothly.
                        src="static/videos/w_x/render_cmp.mp4" 
                        onloadedmetadata="resizeAndPlay(this)" 
                        style="height: 0px;"></video>
-                <canvas class="videoMerge" id="w_xVideoMerge"></canvas>
+                <canvas class="videoMerge" id="w_xVideoMerge" style="width: 80%; height: auto;"></canvas>
             </div> 
         </div>
     </div>
@@ -799,7 +822,7 @@ blue, with intermediate values transitioning smoothly.
                        src="static/videos/pb1/render_cmp.mp4" 
                        onloadedmetadata="resizeAndPlay(this)" 
                        style="height: 0px;"></video>
-                <canvas class="videoMerge" id="pb1VideoMerge"></canvas>
+                <canvas class="videoMerge" id="pb1VideoMerge" style="width: 80%; height: auto;"></canvas>
             </div>
         </div>
     </div>
@@ -811,7 +834,7 @@ blue, with intermediate values transitioning smoothly.
                        src="static/videos/park/render_cmp.mp4" 
                        onloadedmetadata="resizeAndPlay(this)" 
                        style="height: 0px;"></video>
-                <canvas class="videoMerge" id="parkVideoMerge"></canvas>
+                <canvas class="videoMerge" id="parkVideoMerge" style="width: 80%; height: auto;"></canvas>
             </div>
         </div>
     </div>
@@ -820,9 +843,6 @@ blue, with intermediate values transitioning smoothly.
       </div>
     </div>
   <br>
-  <h2 class="content has-text-justified is-size-6"  style="line-height: 1.5;">
-    <b>Comparison between 3DGS and 4DGS reconstruction.</b> Interactive comparison between 3DGS of Wild-SLAM(left) and our 4DGS(right) reconstruction results across three sequences from w_x in TUM, pb1 in Bonn and park in Wild-SLAM. Drag the slider to compare the rendering quality and temporal consistency.
-  </h2>
   </div>
     
 </section>
@@ -942,7 +962,7 @@ blue, with intermediate values transitioning smoothly.
 
 .section-divider {
     width: 80%;
-    margin: 2rem auto;
+    margin: 2rem auto 0rem auto;
     border: none;
     height: 1px;
     background: linear-gradient(to right, transparent, #ddd, transparent);
